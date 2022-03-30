@@ -32,9 +32,22 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 ## Begin
 ```{r aha_survey_2010-2022}
 
-aha_survey <- read.csv(unz('aha_survey_2010-2020_20220202.zip','ei4hqtg6ca3nxglb.csv'), header = T)
+load(file = "aha_smpl2.RData")
 
-str(aha_survey)
+str(aha_smpl2)
 
-table(CNTRL)
+table(aha_smpl2$cntrl, useNA = "ifany")
+```
+```{r scatter}
+
+ggplot(data = aha_smpl2, aes(x = ftaprn, y = tecar,
+color = phygp) "[or facet_wrap( ~ phygp) at end]") +
+geom_point() +
+geom_smooth(method = lm) +
+xlab("Full time employed APRNs") + ylab("Total employed primary care physicians") +
+ggtitle("Association between APRNs & PCPhs at hospitals")
+```
+
+```{r time trend}
+geom_dotplot(aha_smpl2, mapping = aes(x = year, y = ftaprn))
 ```
